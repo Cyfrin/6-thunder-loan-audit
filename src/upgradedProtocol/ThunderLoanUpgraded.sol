@@ -150,7 +150,8 @@ contract ThunderLoanUpgraded is Initializable, OwnableUpgradeable, UUPSUpgradeab
         uint256 mintAmount = (amount * assetToken.EXCHANGE_RATE_PRECISION()) / exchangeRate;
         emit Deposit(msg.sender, token, amount);
         assetToken.mint(msg.sender, mintAmount);
-
+        uint256 calculatedFee = getCalculatedFee(token, amount);
+        assetToken.updateExchangeRate(calculatedFee);
         token.safeTransferFrom(msg.sender, address(assetToken), amount);
     }
 
@@ -208,13 +209,15 @@ contract ThunderLoanUpgraded is Initializable, OwnableUpgradeable, UUPSUpgradeab
         // slither-disable-next-line unused-return reentrancy-vulnerabilities-2
         receiverAddress.functionCall(
             abi.encodeCall(
-                IFlashLoanReceiver.executeOperation, (
-                address(token),
-                amount,
-                fee,
-                msg.sender, // initiator
-                params
-            ))
+                IFlashLoanReceiver.executeOperation,
+                (
+                    address(token),
+                    amount,
+                    fee,
+                    msg.sender, // initiator
+                    params
+                )
+            )
         );
 
         uint256 endingBalance = token.balanceOf(address(assetToken));

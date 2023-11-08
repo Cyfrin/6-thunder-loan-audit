@@ -55,19 +55,28 @@ Assisting Auditors:
   - [High](#high)
     - [\[H-1\] Mixing up variable location causes storage collisions in `ThunderLoan::s_flashLoanFee` and `ThunderLoan::s_currentlyFlashLoaning`](#h-1-mixing-up-variable-location-causes-storage-collisions-in-thunderloans_flashloanfee-and-thunderloans_currentlyflashloaning)
     - [\[H-2\] Unnecessary `updateExchangeRate` in `deposit` function incorrectly updates `exchangeRate` preventing withdraws and unfairly changing reward distribution](#h-2-unnecessary-updateexchangerate-in-deposit-function-incorrectly-updates-exchangerate-preventing-withdraws-and-unfairly-changing-reward-distribution)
+    - [\[H-3\] By calling a flashloan and then `ThunderLoan::deposit` instead of `ThunderLoan::repay` users can steal all funds from the protocol](#h-3-by-calling-a-flashloan-and-then-thunderloandeposit-instead-of-thunderloanrepay-users-can-steal-all-funds-from-the-protocol)
+    - [\[H-4\] getPriceOfOnePoolTokenInWeth uses the TSwap price which doesn't account for decimals, also fee precision is 18 decimals](#h-4-getpriceofonepooltokeninweth-uses-the-tswap-price-which-doesnt-account-for-decimals-also-fee-precision-is-18-decimals)
+    - [\[H-5\] redeem looks at 18 decimals, not the decimals of the token](#h-5-redeem-looks-at-18-decimals-not-the-decimals-of-the-token)
   - [Medium](#medium)
     - [\[M-1\] Centralization risk for trusted owners](#m-1-centralization-risk-for-trusted-owners)
       - [Impact:](#impact)
+      - [Contralized owners can brick redemptions by disapproving of a specific token](#contralized-owners-can-brick-redemptions-by-disapproving-of-a-specific-token)
     - [\[M-2\] Using TSwap as price oracle leads to price and oracle manipulation attacks](#m-2-using-tswap-as-price-oracle-leads-to-price-and-oracle-manipulation-attacks)
+    - [\[M-4\] Fee on transfer, rebase, etc](#m-4-fee-on-transfer-rebase-etc)
   - [Low](#low)
     - [\[L-1\] Empty Function Body - Consider commenting why](#l-1-empty-function-body---consider-commenting-why)
     - [\[L-2\] Initializers could be front-run](#l-2-initializers-could-be-front-run)
     - [\[L-3\] Missing critial event emissions](#l-3-missing-critial-event-emissions)
   - [Informational](#informational)
     - [\[I-1\] Poor Test Coverage](#i-1-poor-test-coverage)
+    - [\[I-2\] Not using `__gap[50]` for future storage collision mitigation](#i-2-not-using-__gap50-for-future-storage-collision-mitigation)
+    - [\[I-3\] Different decimals may cause confusion. ie: AssetToken has 18, but asset has 6](#i-3-different-decimals-may-cause-confusion-ie-assettoken-has-18-but-asset-has-6)
+    - [\[I-4\] Doesn't follow https://eips.ethereum.org/EIPS/eip-3156](#i-4-doesnt-follow-httpseipsethereumorgeipseip-3156)
   - [Gas](#gas)
     - [\[GAS-1\] Using bools for storage incurs overhead](#gas-1-using-bools-for-storage-incurs-overhead)
     - [\[GAS-2\] Using `private` rather than `public` for constants, saves gas](#gas-2-using-private-rather-than-public-for-constants-saves-gas)
+    - [\[GAS-3\] Unnecessary SLOAD when logging new exchange rate](#gas-3-unnecessary-sload-when-logging-new-exchange-rate)
 </details>
 </br>
 
@@ -216,6 +225,12 @@ You can also see the storage layout difference by running `forge inspect Thunder
 
 **Recommended Mitigation:** 
 
+### [H-3] By calling a flashloan and then `ThunderLoan::deposit` instead of `ThunderLoan::repay` users can steal all funds from the protocol
+
+### [H-4] getPriceOfOnePoolTokenInWeth uses the TSwap price which doesn't account for decimals, also fee precision is 18 decimals
+
+### [H-5] redeem looks at 18 decimals, not the decimals of the token
+
 ## Medium 
 
 ### [M-1] Centralization risk for trusted owners
@@ -231,6 +246,9 @@ File: src/protocol/ThunderLoan.sol
 
 261:     function _authorizeUpgrade(address newImplementation) internal override onlyOwner { }
 ```
+
+#### Contralized owners can brick redemptions by disapproving of a specific token
+
 
 ### [M-2] Using TSwap as price oracle leads to price and oracle manipulation attacks
 
@@ -257,6 +275,10 @@ The following all happens in 1 transaction.
 I have created a proof of code located in my `audit-data` folder. It is too large to include here. 
 
 **Recommended Mitigation:** Consider using a different price oracle mechanism, like a Chainlink price feed with a Uniswap TWAP fallback oracle. 
+
+
+
+### [M-4] Fee on transfer, rebase, etc
 
 
 ## Low
@@ -329,6 +351,12 @@ Running tests...
 | src/protocol/OracleUpgradeable.sol | 100.00% (6/6)  | 100.00% (9/9)  | 100.00% (0/0) | 80.00% (4/5)   |
 | src/protocol/ThunderLoan.sol       | 64.52% (40/62) | 68.35% (54/79) | 37.50% (6/16) | 71.43% (10/14) |
 ```
+
+### [I-2] Not using `__gap[50]` for future storage collision mitigation
+
+### [I-3] Different decimals may cause confusion. ie: AssetToken has 18, but asset has 6
+
+### [I-4] Doesn't follow https://eips.ethereum.org/EIPS/eip-3156
 
 **Recommended Mitigation:** Aim to get test coverage up to over 90% for all files. 
 
