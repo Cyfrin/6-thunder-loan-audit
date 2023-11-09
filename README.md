@@ -81,17 +81,17 @@ forge coverage --report debug
 - Commit Hash: 8803f851f6b37e99eab2e94b4690c8b70e26b3f6
 - In Scope:
 ```
-├── interfaces
-│   ├── IFlashLoanReceiver.sol
-│   ├── IPoolFactory.sol
-│   ├── ITSwapPool.sol
-│   #── IThunderLoan.sol
-├── protocol
-│   ├── AssetToken.sol
-│   ├── OracleUpgradeable.sol
-│   #── ThunderLoan.sol
-#── upgradedProtocol
-    #── ThunderLoanUpgraded.sol
+#-- interfaces
+|   #-- IFlashLoanReceiver.sol
+|   #-- IPoolFactory.sol
+|   #-- ITSwapPool.sol
+|   #-- IThunderLoan.sol
+#-- protocol
+|   #-- AssetToken.sol
+|   #-- OracleUpgradeable.sol
+|   #-- ThunderLoan.sol
+#-- upgradedProtocol
+    #-- ThunderLoanUpgraded.sol
 ```
 - Solc Version: 0.8.20
 - Chain(s) to deploy contract to: Ethereum
