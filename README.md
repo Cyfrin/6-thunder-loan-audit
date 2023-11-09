@@ -9,6 +9,8 @@
 
 A flash loan protocol based on [Aave](https://aave.com/) and [Compound](https://compound.finance/).
 
+More information on [Flash Loans](https://www.youtube.com/watch?v=YiF6x193fRk) here.
+
 
 - [Thunder Loan](#thunder-loan)
 - [About](#about)
