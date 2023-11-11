@@ -373,7 +373,7 @@ contract BuffMockTSwap is ERC20 {
         return address(i_poolToken);
     }
 
-    function getWeth() external pure returns (address) {
+    function getWeth() external view returns (address) {
         return address(i_weth);
     }
 

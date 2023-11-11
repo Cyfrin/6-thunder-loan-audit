@@ -27,6 +27,8 @@ contract BuffMockPoolFactory {
     mapping(address token => address pool) private s_pools;
     mapping(address pool => address token) private s_tokens;
 
+    address public immutable i_weth;
+
     /*//////////////////////////////////////////////////////////////
                                  EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -35,6 +37,9 @@ contract BuffMockPoolFactory {
     /*//////////////////////////////////////////////////////////////
                                FUNCTIONS
     //////////////////////////////////////////////////////////////*/
+    constructor(address weth) {
+        i_weth = weth;
+    }
 
     /*//////////////////////////////////////////////////////////////
                            EXTERNAL FUNCTIONS
@@ -43,9 +48,9 @@ contract BuffMockPoolFactory {
         if (s_pools[tokenAddress] != address(0)) {
             revert PoolFactory__PoolAlreadyExists(tokenAddress);
         }
-        string memory liquidityTokenName = string.concat("T-Swap ", IERC20(tokenAddress).name());
-        string memory liquidityTokenSymbol = string.concat("ts", IERC20(tokenAddress).name());
-        TSwapPool tPool = new TSwapPool(tokenAddress, liquidityTokenName, liquidityTokenSymbol);
+        string memory liquidityTokenName = string.concat("T-Swap ", "LP");
+        string memory liquidityTokenSymbol = string.concat("ts", "LPT");
+        BuffMockTSwap tPool = new BuffMockTSwap(tokenAddress, i_weth, liquidityTokenName, liquidityTokenSymbol);
         s_pools[tokenAddress] = address(tPool);
         s_tokens[address(tPool)] = tokenAddress;
         emit PoolCreated(tokenAddress, address(tPool));
