@@ -57,7 +57,6 @@ Assisting Auditors:
     - [\[H-2\] Unnecessary `updateExchangeRate` in `deposit` function incorrectly updates `exchangeRate` preventing withdraws and unfairly changing reward distribution](#h-2-unnecessary-updateexchangerate-in-deposit-function-incorrectly-updates-exchangerate-preventing-withdraws-and-unfairly-changing-reward-distribution)
     - [\[H-3\] By calling a flashloan and then `ThunderLoan::deposit` instead of `ThunderLoan::repay` users can steal all funds from the protocol](#h-3-by-calling-a-flashloan-and-then-thunderloandeposit-instead-of-thunderloanrepay-users-can-steal-all-funds-from-the-protocol)
     - [\[H-4\] getPriceOfOnePoolTokenInWeth uses the TSwap price which doesn't account for decimals, also fee precision is 18 decimals](#h-4-getpriceofonepooltokeninweth-uses-the-tswap-price-which-doesnt-account-for-decimals-also-fee-precision-is-18-decimals)
-    - [\[H-5\] redeem looks at 18 decimals, not the decimals of the token](#h-5-redeem-looks-at-18-decimals-not-the-decimals-of-the-token)
   - [Medium](#medium)
     - [\[M-1\] Centralization risk for trusted owners](#m-1-centralization-risk-for-trusted-owners)
       - [Impact:](#impact)
@@ -228,8 +227,6 @@ You can also see the storage layout difference by running `forge inspect Thunder
 ### [H-3] By calling a flashloan and then `ThunderLoan::deposit` instead of `ThunderLoan::repay` users can steal all funds from the protocol
 
 ### [H-4] getPriceOfOnePoolTokenInWeth uses the TSwap price which doesn't account for decimals, also fee precision is 18 decimals
-
-### [H-5] redeem looks at 18 decimals, not the decimals of the token
 
 ## Medium 
 

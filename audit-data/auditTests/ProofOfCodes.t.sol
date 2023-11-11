@@ -16,7 +16,7 @@ contract ProofOfCodes is ThunderLoanTest {
         uint256 feeBeforeUpgrade = thunderLoan.getFee();
         vm.startPrank(thunderLoan.owner());
         ThunderLoanUpgraded upgraded = new ThunderLoanUpgraded();
-        thunderLoan.upgradeToAndCall(address(upgraded),"");
+        thunderLoan.upgradeToAndCall(address(upgraded), "");
         uint256 feeAfterUpgrade = thunderLoan.getFee();
         vm.stopPrank();
 
@@ -26,7 +26,7 @@ contract ProofOfCodes is ThunderLoanTest {
     function testRedeemAfterLoan() public setAllowedToken hasDeposits {
         uint256 amountToBorrow = AMOUNT * 10;
         vm.startPrank(user);
-        tokenA.mint(address(mockFlashLoanReceiver), AMOUNT);
+        tokenA.mint(address(mockFlashLoanReceiver), fee);
         thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
         vm.stopPrank();
 
