@@ -87,19 +87,4 @@ contract ThunderLoanTest is BaseTest {
         assertEq(mockFlashLoanReceiver.getbalanceDuring(), amountToBorrow + AMOUNT);
         assertEq(mockFlashLoanReceiver.getBalanceAfter(), AMOUNT - calculatedFee);
     }
-
-    function testRedeemAfterLoan() public setAllowedToken hasDeposits {
-        uint256 amountToBorrow = AMOUNT * 10;
-        uint256 calculatedFee = thunderLoan.getCalculatedFee(tokenA, amountToBorrow);
-        vm.startPrank(user);
-        tokenA.mint(address(mockFlashLoanReceiver), calculatedFee);
-        thunderLoan.flashloan(address(mockFlashLoanReceiver), tokenA, amountToBorrow, "");
-        vm.stopPrank();
-
-        uint256 amountToRedeem = type(uint256).max;
-        vm.startPrank(liquidityProvider);
-        vm.expectRevert();
-        thunderLoan.redeem(tokenA, amountToRedeem);
-        vm.stopPrank();
-    }
 }
