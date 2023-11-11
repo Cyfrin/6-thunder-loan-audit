@@ -11,6 +11,7 @@ A flash loan protocol based on [Aave](https://aave.com/) and [Compound](https://
 
 More information on [Flash Loans](https://www.youtube.com/watch?v=YiF6x193fRk) here.
 
+![What is a flash loan?](./images/flash-loans-big.svg)
 
 - [Thunder Loan](#thunder-loan)
 - [About](#about)
