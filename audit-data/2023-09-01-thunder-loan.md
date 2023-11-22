@@ -277,7 +277,6 @@ I have created a proof of code located in my `audit-data` folder. It is too larg
 
 ### [M-4] Fee on transfer, rebase, etc
 
-
 ## Low
 
 ### [L-1] Empty Function Body - Consider commenting why
